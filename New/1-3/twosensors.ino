@@ -1,5 +1,3 @@
-#include <time.h>
-
 // Pin holding the distance sensor
 int sensorPin1 = 0;
 // variable to hold sensor value
@@ -24,6 +22,7 @@ int bluePin = 9;
 int t1 = 5000;
 int t2 = 15000;
 
+//Function that allocates the colours on RGB LED
 void setColour(int red, int green, int blue)
 {
   red = 255 - red;
@@ -35,33 +34,35 @@ void setColour(int red, int green, int blue)
   analogWrite(bluePin, blue);  
 }
 
-void Calibration(int t, int &sensorHigh, int &sensorLow, int sensorValue, int sensorPin)
+//Calibration function
+void Calibration(int t, int *sensorHigh, int *sensorLow, int sensorValue, int sensorPin)
 {
     // calibrate for the first five seconds after program runs
     while (millis() < t) 
     {
+      setColour(255,255,255); //White
       // record the maximum sensor value
       sensorValue = analogRead(sensorPin);
-      if (sensorValue > sensorHigh) 
+      if (sensorValue > *sensorHigh) 
       {
-        sensorHigh = sensorValue;
+        *sensorHigh = sensorValue;
       }
       
       // record the minimum sensor value
-      if (sensorValue < sensorLow) 
+      if (sensorValue < *sensorLow) 
       {
-        sensorLow = sensorValue;
+        *sensorLow = sensorValue;
       }
-
-       while (millis() > (t-1000) && millis()< t)
+      //In the final second RGB LED flashes blue
+      while (millis() > (t-1000) && millis()< t)
        {
-          setColour(0,0,255);
+          setColour(0,0,0); //Off
           delay (100);
-          setColour(0,0,0);
+          setColour(0,0,255); //Blue
           delay (100);
        }
     }
-  
+
 }
  
 void setup() {
@@ -70,55 +71,69 @@ void setup() {
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT); 
 
-  Calibration(t1,sensorHigh1,sensorLow1, sensorValue1, sensorPin1);
+  //Calls first calibration for sensor 1
+  Calibration(t1,&sensorHigh1,&sensorLow1, sensorValue1, sensorPin1);
   Serial.print("S1:");
   Serial.println(sensorLow1);
-  
-  setColour(255,0,0);
-  delay(5000);
-  setColour(0,0,255); 
-  delay(5000);
+  Serial.print("S1:");
+  Serial.println(sensorHigh1);
 
-  setColour(255,255,255);
-  Calibration(t2,sensorHigh2, sensorLow2, sensorValue2, sensorPin2); 
+  //Five second delay betwenn calibration
+  setColour(255,0,0); //Red
+  delay(5000);
+  
+  //Colour change indicates start of next calibration
+  setColour(255,255,255); //White
+  //calls second calibration for sensor 2
+  Calibration(t2,&sensorHigh2, &sensorLow2, sensorValue2, sensorPin2); 
   Serial.print("S2:");
   Serial.println(sensorLow2);
+  Serial.print("S2:");
+  Serial.println(sensorHigh2);
 }
 
 void loop()
 {
+  //Reads the values produced from the sensor
   sensorValue1 = analogRead(sensorPin1);
   sensorValue2 = analogRead(sensorPin2);
 
+  //When the values are between the max and min values for sensor 1
   if(sensorValue1 > sensorLow1 && sensorValue1 < sensorHigh1)
   {
+     //Prints the value of sensor 1 when in range
      Serial.print("S1:");
      Serial.println(sensorValue1);
-     setColour(0,255,0);
+     //setColour(0,255,0); //Green
   }
   else 
   {
+    //Prints the value of sensor 1 when out of range
     Serial.print("S1:");
     Serial.println(sensorValue1);
-    setColour(255,0,0);
+    //setColour(255,0,0); //Red
   }
   
-
+  //When the values are between the max and min values for sensor 2
   if(sensorValue2 > sensorLow2 && sensorValue2 < sensorHigh2)
   {
+    //Prints the value of sensor 1 when in range
     Serial.print("S2:");
     Serial.println(sensorValue2);
-    setColour(0,0,255); 
+    //setColour(0,0,255); //Blue
   }
   else 
   {
+    //Prints the value of sensor 1 when out of range
     Serial.print("S2:");
     Serial.println(sensorValue2);
-    setColour(255,255,0);
+    //setColour(255,255,0); //Something?
   }
 
+  //Half a second delay between printing values
   delay(500); 
   
+
 }
 
 
