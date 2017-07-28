@@ -1,7 +1,6 @@
 import serial
 import pyglet
 import time 
-import threading
 
 # If you get an error about Serial - make sure the USB is plugged in all the way 
 #Connects to the port/Opens it 
@@ -15,40 +14,24 @@ player2 = pyglet.media.Player()
 player1.queue(pyglet.media.load('1.wav', streaming=False))
 player2.queue(pyglet.media.load('3.wav', streaming = False))
 
-def on_eos():
-        player1.queue(pyglet.media.load('1.wav', streaming=False))
-
-#Function that determines what happens after the timer finishes 
-#At the moment this a tad bit broken - the audio when it gets replayed keeps skipping a lot 
-def nxt():
-    player1.queue(pyglet.media.load('1.wav', streaming=False))
-    player1.next_source()
 
 def sensor1(data):
-    #Timer var
-    t = threading.Timer(10.0, nxt)
-
     #If this number is between the range it will play the audio otherwise it will pause it
-    if data > S1Low or data < High:
+    if data > S1Low and data < S1High:
         player1.play()
 
     else:
-        t.start()
         player1.pause()
         
-    on_eos()
+  
 def sensor2(data):
-    #Timer var
-    t = threading.Timer(10.0, nxt)
 
     #If this number is between the range it will play the audio otherwise it will pause it
-    if data > S2Low or data < High:
+    if data > S2Low and data < S2High:
         player2.play()
     else:
-        t.start()
-        player1.pause()
+        player2.pause()
         
-    on_eos()
 
 def search(data):
     print(data)
@@ -63,23 +46,28 @@ def search(data):
 
 #Extra vars 
 
-High = 0
+
 S1Low = 0
+S1High = 0
 S2Low = 0
+S2High = 0
+inp = 0 
 
 def Calibration():
-    first = True
+    
     #To get the range it listens for the serial port, the first number from the serial is the low value
-    while first == True:
-        S1Low = ser.readline().decode()
-        S2Low = ser.readline().decode()
-        first = False 
+    inp = ser.readline().decode()
+    print(inp)
+    inp = int(inp.split(':') [1])
+    print(inp)
+    return inp
 
-    S1Low = int(S1Low.split(':') [1])
-    S2Low = int(S2Low.split(':') [1])
+S1Low = Calibration()
+S1High = Calibration()
 
+S2Low = Calibration()
+S2High = Calibration()
 
-Calibration()
 #Waits for 5 seconds -- This is to stop the audio from playing straight away
 time.sleep(5)
 
