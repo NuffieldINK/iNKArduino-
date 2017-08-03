@@ -26,7 +26,7 @@ def Sensor1(data):
         player1.pause()
 
         #If the user is out of range for more than 10 seconds 
-        pygame.time.set_timer(S1_next, 10000)
+        pygame.time.set_timer(S1_next, 10000.0)
 
 #Sensor 2 code -  responsible for playing audio or not
 def Sensor2(data):
