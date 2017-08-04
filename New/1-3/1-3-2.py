@@ -2,32 +2,59 @@ import serial
 import pygame 
 import time
 
-#Vars 
+#Variables 
 S1Low = 0
 S1High = 0
 S2Low = 0
 S2High = 0
 inp = 0
 
-#When the timers are met 
-def S1_next():
-    player1.play()
+#Need to create own timer class to make sure the audio will restart after 10 seconds of being out of range
+class Timer:
 
-def S2_next():
-    player2.play()
+    def __init__(self):
 
-#Sensor 1 code -  responsible for playing audio or not 
+        self.elapsed = 0.0
+        self.running = False
+        self.last_start_time = None
+
+    def start(self):
+
+        if not self.running:
+            self.running = True
+            self.last_start_time = time.time()
+
+    def reset(self):
+
+        if self.running: 
+            self.elapsed = 0.0
+            self.running = False
+            self.last_start_time = None
+
+    def get_elapsed(self):
+
+        elapsed = self.elapsed
+
+        if self.running:
+            elapsed += time.time() - self.last_start_time
+        return elapsed   
+
+#Sensor 1 code -  responsible for playing audio
 def Sensor1(data):
 
-    #If this number (data) is between the range it will play the audio otherwise it will pause it
+    #Checks if data is in range and acts accordingly 
     if data > S1Low and data < S1High:
         player1.unpause()
     else:
         player1.pause()
+        timer1.start()
 
-        #If the user is out of range for more than 10 seconds 
-        pygame.time.set_timer(S1_next, 10000.0)
-
+        if(timer1.get_elapsed() > 10):
+            player1.play()
+            player1.pause()
+        
+        #Don't know if it will work
+        timer1.reset()
 #Sensor 2 code -  responsible for playing audio or not
 def Sensor2(data):
     
@@ -37,9 +64,14 @@ def Sensor2(data):
     else:
         player2.pause()
 
-        #If the user is out of range for more than 10 seconds
-        pygame.time.set_timer(S1_next, 10000)
-    
+        timer2.start()
+        
+        if(timer2.get_elapsed() > 10):
+            player2.play()
+            player2.pause()
+
+        #Unknown if this is going to work! 
+        timer2.reset()
 
 #Search - Decides whether Sensor1 or Sensor2 gets called 
 def Search(data):
@@ -54,12 +86,14 @@ def Search(data):
     else:
         print("Failure")
 
+    print(info)
 #Callibration code - small but allows for reuse for all sesnors  
 def Calibration():
     
     #To get the range it listens for the serial port, the first number from the serial is the low value
     inp = ser.readline().decode()
     inp = int(inp.split(':')[1])
+    print(inp)
  
     return inp
 
@@ -84,6 +118,10 @@ if __name__ == "__main__":
     player1.pause()
     player2.play(-1)
     player2.pause()
+
+    #Initialises the timers
+    timer1 = Timer()
+    timer2 = Timer()
 
     #Calibrates the two sensors
     S1Low = Calibration()

@@ -11,9 +11,9 @@ time.sleep(1)
 player1 = pyglet.media.Player()
 player2 = pyglet.media.Player()
 
+#Queues each player 
 player1.queue(pyglet.media.load('1.wav', streaming=False))
 player2.queue(pyglet.media.load('3.wav', streaming = False))
-
 
 def sensor1(data):
     #If this number is between the range it will play the audio otherwise it will pause it
@@ -22,7 +22,7 @@ def sensor1(data):
 
     else:
         player1.pause()
-        
+
   
 def sensor2(data):
 
@@ -53,20 +53,34 @@ S2Low = 0
 S2High = 0
 inp = 0 
 
-def Calibration():
+#To do: Make into a single function -- pass the paths via a parameter
+def CalibrationS1(i):
+
+    f = open("Sen1.txt", 'r')
+    line = f.readlines()
+    value = line[i].strip('\n')
+    value = int(value)
+    print(value)
+    f.close()
+
+    return(value)
+   
+def CalibrationS2(i):
+
+    f = open("Sen3.txt", 'r')
+    line = f.readlines()
+    value = line[i].strip('\n')
+    value = int(value)
+    print(value)
+    f.close()
     
-    #To get the range it listens for the serial port, the first number from the serial is the low value
-    inp = ser.readline().decode()
-    print(inp)
-    inp = int(inp.split(':') [1])
-    print(inp)
-    return inp
+    return(value)
 
-S1Low = Calibration()
-S1High = Calibration()
+S1Low = CalibrationS1(0)
+S1High = CalibrationS1(2)
 
-S2Low = Calibration()
-S2High = Calibration()
+S2Low = CalibrationS2(0)
+S2High = CalibrationS2(2)
 
 #Waits for 5 seconds -- This is to stop the audio from playing straight away
 time.sleep(5)
@@ -79,6 +93,7 @@ while True:
 
 #Closes the port 
 ser.close()
+
 
 #Packages the audio player 
 pyglet.app.run()
