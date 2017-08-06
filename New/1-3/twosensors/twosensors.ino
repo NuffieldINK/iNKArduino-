@@ -28,18 +28,19 @@ void setColour(int red, int green, int blue)
   red = 255 - red;
   green = 255 - green;
   blue = 255 - blue;
-  
+
   analogWrite(redPin, red);
   analogWrite(greenPin, green);
-  analogWrite(bluePin, blue);  
+  analogWrite(bluePin, blue);
 }
 
- 
+
 void setup() {
+  //Intiliases all the input/output pins used
   Serial.begin(9600);
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT); 
+  pinMode(bluePin, OUTPUT);
 }
 
 void loop()
@@ -48,6 +49,7 @@ void loop()
   sensorValue1 = analogRead(sensorPin1);
   sensorValue2 = analogRead(sensorPin2);
 
+  //Prints out the readings from the two sensors
   Serial.print("S1:");
   Serial.println(sensorValue1);
 
@@ -55,11 +57,9 @@ void loop()
 
   Serial.print("S2:");
   Serial.println(sensorValue2);
-  
+
   //Half a second delay between printing values
-  delay(500); 
-  
+  delay(500);
+
 
 }
-
-

@@ -26,6 +26,7 @@ void setColour(int red, int green, int blue)
 //Calibration function - uses pass by reference to insert the values 
 void Calibration(int *sensorHigh, int *sensorLow, int *sensorValue, int sensorPin)
 {
+  //For the first 5 seconds it will calibrate
    while(millis() < 5000)
    {
 
@@ -42,6 +43,7 @@ void Calibration(int *sensorHigh, int *sensorLow, int *sensorValue, int sensorPi
       *sensorLow = sensorValue; 
     }
 
+    //During the last second it will flash red 
     while(millis() > 4000 && millis() < 5000)
     {
       setColour(0,0,0);
@@ -50,6 +52,8 @@ void Calibration(int *sensorHigh, int *sensorLow, int *sensorValue, int sensorPi
     }
    }
 }
+
+//This code runs at the start 
 void setup() 
 {
   Serial.begin(9600);
@@ -61,6 +65,8 @@ void setup()
 
 void loop() 
 {
-  setColour(0,0,255);
+
+  //Turns Green 
+  setColour(0,255,0);
 
 }

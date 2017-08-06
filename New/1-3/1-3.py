@@ -1,19 +1,13 @@
 import serial
 import pyglet
-import time 
+import time
 
-# If you get an error about Serial - make sure the USB is plugged in all the way 
-#Connects to the port/Opens it 
-ser =  serial.Serial("COM6", 9600)
-time.sleep(1)
-
-#Initialises the players and then queues the audio for both 
-player1 = pyglet.media.Player()
-player2 = pyglet.media.Player()
-
-#Queues each player 
-player1.queue(pyglet.media.load('1.wav', streaming=False))
-player2.queue(pyglet.media.load('3.wav', streaming = False))
+#Extra vars
+S1Low = 0
+S1High = 0
+S2Low = 0
+S2High = 0
+inp = 0
 
 def sensor1(data):
     #If this number is between the range it will play the audio otherwise it will pause it
@@ -23,7 +17,7 @@ def sensor1(data):
     else:
         player1.pause()
 
-  
+
 def sensor2(data):
 
     #If this number is between the range it will play the audio otherwise it will pause it
@@ -31,9 +25,10 @@ def sensor2(data):
         player2.play()
     else:
         player2.pause()
-        
 
 def search(data):
+
+    #Searches the line and looks for the prefixes and then splits the data up which then goes to the relevant functions
     print(data)
     if data.find('S1') >= 0:
         info = int(data.split(':') [1])
@@ -42,18 +37,10 @@ def search(data):
         info = int(data.split(':') [1])
         sensor2(info)
     else:
-        print("Failure")    
-
-#Extra vars 
-
-
-S1Low = 0
-S1High = 0
-S2Low = 0
-S2High = 0
-inp = 0 
+        print("Failure")
 
 #To do: Make into a single function -- pass the paths via a parameter
+#Calibration modules - Reads in the calibration files and inputs them into variables
 def CalibrationS1(i):
 
     f = open("Sen1.txt", 'r')
@@ -64,37 +51,52 @@ def CalibrationS1(i):
     f.close()
 
     return(value)
-   
+
 def CalibrationS2(i):
 
-    f = open("Sen3.txt", 'r')
+    f = open("Sen2.txt", 'r')
     line = f.readlines()
     value = line[i].strip('\n')
     value = int(value)
     print(value)
     f.close()
-    
+
     return(value)
 
-S1Low = CalibrationS1(0)
-S1High = CalibrationS1(2)
+if __name__ == '__main__':
 
-S2Low = CalibrationS2(0)
-S2High = CalibrationS2(2)
+    # If you get an error about Serial - make sure the USB is plugged in all the way
+    #Connects to the port/Opens it
+    ser =  serial.Serial("COM6", 9600)
+    time.sleep(1)
 
-#Waits for 5 seconds -- This is to stop the audio from playing straight away
-time.sleep(5)
+    #Initialises the players and then queues the audio for both
+    player1 = pyglet.media.Player()
+    player2 = pyglet.media.Player()
 
-#While loop that does all the magic 
-while True:
-    #Reads the number from serial
-    read = ser.readline().decode()
-    search(read)
-
-#Closes the port 
-ser.close()
+    #Queues each player
+    player1.queue(pyglet.media.load('1.wav', streaming=False))
+    player2.queue(pyglet.media.load('3.wav', streaming = False))
 
 
-#Packages the audio player 
-pyglet.app.run()
+    #Waits for 5 seconds -- This is to stop the audio from playing straight away
+    time.sleep(5)
 
+    #Calibrates the sensors from file
+    S1Low = CalibrationS1(0)
+    S1High = CalibrationS1(2)
+
+    S2Low = CalibrationS2(0)
+    S2High = CalibrationS2(2)
+
+    #While loop that does all the magic
+    while True:
+        #Reads the number from serial
+        read = ser.readline().decode()
+        search(read)
+
+    #Closes the port
+    ser.close()
+
+    #Packages the audio player
+    pyglet.app.run()

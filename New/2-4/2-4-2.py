@@ -2,18 +2,41 @@ import serial
 import pygame
 import time
 
-#Vars
+#Variables
 S1Low = 0
 S1High = 0
 inp = 0
 
-#When the timers are met
-def S1_next():
-    player1.play()
+#Need to create own timer class to make sure the audio will restart after 10 seconds of being out of range
+class Timer:
 
+    def __init__(self):
 
-def S2_next():
-    player2.play()
+        self.elapsed = 0.0
+        self.running = False
+        self.last_start_time = None
+
+    def start(self):
+
+        if not self.running:
+            self.running = True
+            self.last_start_time = time.time()
+
+    def reset(self):
+
+        if self.running:
+            self.elapsed = 0.0
+            self.running = False
+            self.last_start_time = None
+
+    def get_elapsed(self):
+
+        elapsed = self.elapsed
+
+        if self.running:
+            elapsed += time.time() - self.last_start_time
+        return elapsed
+
 
 #Sensor 1 code -  responsible for playing audio or not
 def Sensor1(data):
@@ -54,14 +77,16 @@ def Search(data):
         print("Failure")
 
 #Callibration code - small but allows for reuse for all sesnors
-def Calibration():
+def Calibration(i):
 
-    #To get the range it listens for the serial port, the first number from the serial is the low value
-    inp = ser.readline().decode()
-    inp = int(inp.split(':')[1])
+    f = open("Sen3.txt", 'r')
+    line = f.readlines()
+    value = line[i].strip('\n')
+    value = int(value)
+    print(value)
+    f.close()
 
-    return inp
-
+    return(value)
 
 #Main
 if __name__ == "__main__":
@@ -86,8 +111,8 @@ if __name__ == "__main__":
     player2.pause()
 
     #Calibrates the two sensors
-    S1Low = Calibration()
-    S1High = Calibration()
+    S1Low = Calibration(0)
+    S1High = Calibration(2)
 
     #Waits for 5 seconds -- This is to stop the audio from playing straight away
     time.sleep(5)
