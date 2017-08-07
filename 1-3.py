@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     #Queues each player
     player1.queue(pyglet.media.load('1.wav', streaming=False))
-    player2.queue(pyglet.media.load('3.wav', streaming = False))
+    player2.queue(pyglet.media.load('3-2.wav', streaming = False))
 
 
     #Waits for 5 seconds -- This is to stop the audio from playing straight away

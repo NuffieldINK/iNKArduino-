@@ -138,11 +138,10 @@ if __name__ == "__main__":
     timer2 = Timer()
 
     #Calibrates the two sensors
-    S1Low = Calibration(0)
-    S1High = Calibration(2)
+    S1High = CalibrationS1(2)
 
-    S2Low = Calibration(0)
-    S2High = Calibration(2)
+    S2Low = CalibrationS2(0)
+    S2High = CalibrationS2(2)
 
     #Waits for 5 seconds -- This is to stop the audio from playing straight away
     time.sleep(5)

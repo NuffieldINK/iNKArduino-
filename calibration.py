@@ -7,7 +7,7 @@ import os
 import time 
 
 #Opens up the Serial connection 
-ser = serial.Serial("COM6", 9600)
+ser = serial.Serial("COM3", 9600)
 
 #Waits for the calibration to end 
 time.sleep(5)

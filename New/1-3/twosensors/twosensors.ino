@@ -61,5 +61,10 @@ void loop()
   //Half a second delay between printing values
   delay(500);
 
+  // if (sensorValue1 < sensorLow1 && sensorValue1 > sensorHigh1)
+  // {
+
+  // }
+
 
 }

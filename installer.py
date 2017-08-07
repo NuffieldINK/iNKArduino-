@@ -3,6 +3,8 @@
 import os
 import argparse
 
+
+
 #Parses the arguments 
 parser = argparse.ArgumentParser(description = 'A little program that will run a selection of programs')
 
@@ -21,9 +23,9 @@ args = parser.parse_args()
 #Chooses which program should be run
 def run():
     if args.run == "1-3.py":
-         os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\New\\1-3\\1-3.py')
+        os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\1-3.py')
     elif args.run == "2-4.py":
-        os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\New\\2-4\\2-4.py')
+        os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\2-4.py')
     else:
         print("ERROR: YOU HAVE NOT SELECTED A CORRECT FILE \n")
 
@@ -36,6 +38,5 @@ if __name__ == "__main__":
     if args.run:
         run()
     elif args.runboth:
-        os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\New\\2-4\\2-4.py')
-        os.system('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\New\\1-3\\1-3.py')
-
+        os.system ('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\1-3.py')
+        os.system ('python C:\\Users\\Impact\\Documents\\Temp\\iNKArduino\\2-4.py')

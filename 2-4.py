@@ -28,10 +28,10 @@ def search(data):
 
     #Searches the line and looks for the prefixes and then splits the data up which then goes to the relevant functions
     print(data)
-    if data.find('S1') >= 0:
+    if data.find('S3') >= 0:
         info = int(data.split(':') [1])
         sensor1(info)
-    elif data.find('S2') >= 0:
+    elif data.find('S4') >= 0:
         info = int(data.split(':') [1])
         sensor2(info)
     else:
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     player2 = pyglet.media.Player()
 
     player1.queue(pyglet.media.load('2.wav', streaming=False))
-    player2.queue(pyglet.media.load('4.wav', streaming = False))
+    player2.queue(pyglet.media.load('4-2.wav', streaming = False))
 
     #Runs the calibration for the sensor
     S1Low = Calibration(0)

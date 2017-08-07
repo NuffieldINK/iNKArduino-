@@ -47,19 +47,19 @@ void loop()
     if(digitalRead(button) == LOW)
     {
       digitalWrite(ledpin, HIGH);
-      Serial.print("S2:");
+      Serial.print("S4:");
       Serial.println("2000");
                  
     }
     else
     {
       digitalWrite(ledpin, LOW);
-      Serial.print("S2:");
+      Serial.print("S4:");
       Serial.println ("3000");
     }
 
-    delay(100)
-    Serial.print("S1:");
+    delay(100);
+    Serial.print("S3:");
     Serial.println(sensorValue);
     
   delay(500);

@@ -49,6 +49,7 @@ void Calibration(int *sensorHigh, int *sensorLow, int *sensorValue, int sensorPi
       setColour(0,0,0);
       delay(100);
       setColour(255,0,0);
+      delay(100);
     }
    }
 }
@@ -61,12 +62,13 @@ void setup()
 
   Serial.println(sensorLow);
   Serial.println(sensorHigh);
+  //Turns Green 
+  setColour(0,255,0);
 }
 
 void loop() 
 {
 
-  //Turns Green 
-  setColour(0,255,0);
+
 
 }
