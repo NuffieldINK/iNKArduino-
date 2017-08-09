@@ -1,6 +1,5 @@
 
 //Declaring variables
-#include <time.h>
 
 // Pin holding the distance sensor
 int sensorPin = A0;
@@ -16,8 +15,6 @@ int redPin = 11;
 int greenPin = 10;
 int bluePin = 9;
 int button = 13;
-int t1 = 5000;
-int t2 = 15000;
 
 void setColour(int red, int green, int blue)
 {

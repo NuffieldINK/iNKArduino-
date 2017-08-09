@@ -62,13 +62,12 @@ void setup()
 
   Serial.println(sensorLow);
   Serial.println(sensorHigh);
-  //Turns Green 
-  setColour(0,255,0);
 }
 
 void loop() 
 {
 
-
+  //Turns Green 
+  setColour(0,255,0);
 
 }
