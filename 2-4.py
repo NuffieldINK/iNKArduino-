@@ -1,16 +1,20 @@
+#This code is to activate the arduino with the sensor at John and the fireplace pressure pad
+#Use this code on Sandbox --> Not been tested on Impact
+
+#Importing Libraries
 import serial
 import pyglet
 import time
 
 
 #Extra vars
-S1High = 0
-S1Low = 0
+S3High = 0
+S3Low = 0
 inp = 0
 
 def sensor1(data):
     #If this number is between the range it will play the audio otherwise it will pause it
-    if data > S1Low and data < S1High:
+    if data > S3Low and data < S3High:
         player1.play()
 
     else:
@@ -41,7 +45,7 @@ def search(data):
 def Calibration(i):
     f = open("Sen3.txt", 'r')
     line = f.readlines()
-    value = line[i].strip('\n')
+    value = line[i].strip('\r\n')
     value = int(value)
     print(value)
     f.close()
@@ -52,7 +56,7 @@ if __name__ == '__main__':
 
     # If you get an error about Serial - make sure the USB is plugged in all the way
     #Connects to the port/Opens it
-    ser =  serial.Serial("COM3", 9600)
+    ser =  serial.Serial("COM4", 9600)
     time.sleep(1)
 
     #Initialises the players and then queues the audio for both
@@ -64,7 +68,7 @@ if __name__ == '__main__':
 
     #Runs the calibration for the sensor
     S1Low = Calibration(0)
-    S1High = Calibration(2)
+    S1High = Calibration(1)
 
     #Waits for 5 seconds -- This is to stop the audio from playing straight away
     time.sleep(5)

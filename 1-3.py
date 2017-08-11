@@ -1,3 +1,7 @@
+#This code is to activate the arduino with the sensor at William(||) and the sensor at the Grand Tour
+#Use this code on Impact
+
+#Importing libraries
 import serial
 import pyglet
 import time
