@@ -27,7 +27,7 @@ void setColour(int red, int green, int blue)
 void Calibration(int *sensorHigh, int *sensorLow, int *sensorValue, int sensorPin)
 {
   //For the first 5 seconds it will calibrate
-   while(millis() < 5000)
+   while(millis() < 10000)
    {
 
     setColour(255,255,255);

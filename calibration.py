@@ -12,7 +12,7 @@ import time
 ser = serial.Serial("COM6", 9600)
 
 #Waits for the calibration to end 
-time.sleep(5)
+time.sleep(12)
 
 #Dictionary for the sensor data files 
 senFile = {"1": "Sen1.txt", "2": "Sen2.txt", "3": "Sen3.txt"}
