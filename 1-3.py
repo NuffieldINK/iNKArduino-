@@ -15,7 +15,7 @@ inp = 0
 
 def sensor1(data):
     #If this number is between the range it will play the audio otherwise it will pause it
-    if  not (data > S1Low and data < S1High):
+    if data > S1Low and data < S1High:
         player1.play()
 
     else:
@@ -25,7 +25,7 @@ def sensor1(data):
 def sensor2(data):
 
     #If this number is between the range it will play the audio otherwise it will pause it
-    if  not (data > S2Low and data < S2High):
+    if data > S2Low and data < S2High:
         player2.play()
     else:
         player2.pause()
